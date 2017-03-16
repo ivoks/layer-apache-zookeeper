@@ -53,6 +53,11 @@ def restart_zookeeper_if_config_changed():
         elif (zk_count % 2 == 0):
             extra_status = ": even number is suboptimal"
         hookenv.status_set('active', 'Ready (%d zk units%s)' % (zk_count, extra_status))
+    else:
+        # Make sure zookeeper is running in any case
+        zk = Zookeeper()
+        zk.start()
+        zk.open_ports()
 
 
 @when('zookeeper.started', 'config.changed.rest')
